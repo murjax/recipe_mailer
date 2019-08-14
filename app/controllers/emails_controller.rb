@@ -1,24 +1,15 @@
 class EmailsController < ApplicationController
-  before_action :set_email, only: [:show, :edit, :update, :destroy]
-
-  # GET /emails
-  # GET /emails.json
-  def index
-    @emails = Email.all
-  end
+  before_action :set_email, only: [:show, :update]
 
   # GET /emails/1
   # GET /emails/1.json
   def show
+    @email_message = "Thank you for signing up. You will receive daily recipes at #{@email.email}"
   end
 
   # GET /emails/new
   def new
     @email = Email.new
-  end
-
-  # GET /emails/1/edit
-  def edit
   end
 
   # POST /emails
@@ -34,30 +25,6 @@ class EmailsController < ApplicationController
         format.html { render :new }
         format.json { render json: @email.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # PATCH/PUT /emails/1
-  # PATCH/PUT /emails/1.json
-  def update
-    respond_to do |format|
-      if @email.update(email_params)
-        format.html { redirect_to @email, notice: 'Email was successfully updated.' }
-        format.json { render :show, status: :ok, location: @email }
-      else
-        format.html { render :edit }
-        format.json { render json: @email.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /emails/1
-  # DELETE /emails/1.json
-  def destroy
-    @email.destroy
-    respond_to do |format|
-      format.html { redirect_to emails_url, notice: 'Email was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 
