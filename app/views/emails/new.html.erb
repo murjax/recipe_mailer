@@ -1,5 +1,14 @@
-<h1>New Email</h1>
+<div class="text-center">
+  <h3>Welcome to Recipe Mailer</h3>
+  <h4>Please enter your email to sign up for daily recipes</h4>
 
-<%= render 'form', email: @email %>
+  <%= form_with(model: @email, local: true) do |form| %>
+    <div class="field">
+      <%= form.text_field :email %>
+    </div>
 
-<%= link_to 'Back', emails_path %>
+    <div class="actions mt-1">
+      <%= form.submit "Sign Up", class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
