@@ -149,17 +149,10 @@ class RecipeGenerator
   ]
 
   def generate
-    app_id = ENV['EDAMAM_APP_ID']
-    app_key = ENV['EDAMAM_APP_KEY']
     types = [:breakfast, :lunch, :dinner]
     selected_type = types.sample
     query = random_query(selected_type)
-    calories2 = Random.new.rand(500..3000)
-    response = HTTParty.get("https://api.edamam.com/search?app_id=#{app_id}&app_key=#{app_key}&q=#{query}&mealType=#{selected_type}")
-    title = response.dig('hits', 0, 'recipe', 'label')
-    ingredients = response.dig('hits', 0, 'recipe', 'ingredientLines')
-
-    { title: title, ingredients: ingredients }
+    Food2Fork::Recipe.search(q: query)
   end
 
   def random_query(type)
@@ -170,6 +163,16 @@ class RecipeGenerator
       return "#{MEATS.sample} #{GRAIN.sample}"
     when :dinner
       return "#{MEATS.sample} #{VEGETABLES.sample}"
+    end
+  end
+
+  def get_recipe(response)
+    if response.count && response.count > 0
+      index = (0..(response.count - 1)).to_a.sample
+      recipe_id = response[index].recipe_id
+      Food2Fork::Recipe.get(rId: recipe_id)
+    elsif response&.recipe_id
+      Food2Fork::Recipe.get(rId: response.recipe_id)
     end
   end
 end

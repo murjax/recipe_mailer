@@ -3,22 +3,19 @@ require 'rails_helper'
 describe RecipeGenerator do
   describe '#generate' do
     let(:title) { 'Apple Elixir Recipe' }
-    let(:ingredient_lines) { ['4 cups fresh apple cider', '2 cinnamon sticks'] }
+    let(:source_url) { 'https://google.com' }
     let(:response) do
-      {
-        hits: [{
-          recipe: {
-            label: title,
-            ingredientLines: ingredient_lines
-          }
-        }]
-      }.deep_stringify_keys
+      [OpenStruct.new({
+        title: title,
+        source_url: source_url
+      })]
     end
 
     it 'returns recipe' do
-      expect(HTTParty).to receive('get').and_return(response)
-      recipe = described_class.new.generate
-      expect(recipe).to eq(title: title, ingredients: ingredient_lines)
+      expect(Food2Fork::Recipe).to receive(:search).and_return(response)
+      recipe = described_class.new.generate.first
+      expect(recipe.title).to eq(title)
+      expect(recipe.source_url).to eq(source_url)
     end
   end
 

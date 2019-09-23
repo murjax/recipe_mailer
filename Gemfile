@@ -33,7 +33,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 gem 'bootstrap', '~> 4.3.1'
 gem 'jquery-rails'
-gem 'edamam-ruby'
+gem 'food2fork'
 gem 'dotenv-rails'
 gem 'httparty'
 
